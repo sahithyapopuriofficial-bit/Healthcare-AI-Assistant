@@ -73,7 +73,7 @@ Healthcare-AI-Assistant/
 Create a `.env` file in the project root (a template is already included):
 
 ```env
-GROK_API_KEY=your_xai_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 LANGCHAIN_API_KEY=your_langsmith_api_key_here
 LANGCHAIN_PROJECT=healthcare-ai-assistant
 LANGCHAIN_TRACING_V2=true
@@ -107,7 +107,7 @@ _Add screenshots of the chat interface here after running the app locally._
 3. Select this repository and set `app.py` as the entrypoint.
 4. In the app's **Secrets** settings, add the same keys as in `.env`:
    ```toml
-   GROK_API_KEY = "your_xai_api_key_here"
+   GROQ_API_KEY = "your_groq_api_key_here"
    LANGCHAIN_API_KEY = "your_langsmith_api_key_here"
    LANGCHAIN_PROJECT = "healthcare-ai-assistant"
    LANGCHAIN_TRACING_V2 = "true"
