@@ -10,6 +10,14 @@ from ui.sidebar import render_sidebar
 from ui.styles import DARK_THEME_CSS
 
 
+def _streamlit_has_groq_secret() -> bool:
+    """Return whether Streamlit Cloud supplied the Groq secret key name."""
+    try:
+        return "GROQ_API_KEY" in st.secrets
+    except Exception:
+        return False
+
+
 def main() -> None:
     """Configure the page, apply styling, and render the app layout."""
     st.set_page_config(
@@ -25,6 +33,15 @@ def main() -> None:
         st.session_state["messages"] = []
 
     render_sidebar()
+
+    # Temporary deployment diagnostic: remove after confirming Cloud secrets.
+    key_preview = settings.groq_api_key[:6] if settings.groq_api_key else "(empty)"
+    st.sidebar.caption(
+        "Groq key debug — "
+        f"configured: {bool(settings.groq_api_key)} | "
+        f"prefix: {key_preview} | "
+        f"GROQ_API_KEY in st.secrets: {_streamlit_has_groq_secret()}"
+    )
 
     st.markdown(
         f"""

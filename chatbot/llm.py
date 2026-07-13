@@ -2,9 +2,7 @@
 LLM initialization for Groq Cloud using an OpenAI-compatible client.
 
 Groq's API is OpenAI-compatible, so we use langchain_openai's ChatOpenAI
-pointed at the Groq base URL. Note: this is Groq Cloud (console.groq.com,
-keys prefixed 'gsk_'), not to be confused with xAI's Grok (console.x.ai,
-keys prefixed 'xai-').
+pointed at the Groq base URL.
 """
 
 from langchain_openai import ChatOpenAI

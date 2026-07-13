@@ -19,7 +19,7 @@ def _get_setting(key: str, default: str = "") -> str:
     """Fetch a config value, preferring Streamlit secrets over env vars.
 
     Args:
-        key: The setting name (e.g. 'GROK_API_KEY').
+        key: The setting name (e.g. 'GROQ_API_KEY').
         default: Value to return if not found anywhere.
 
     Returns:
@@ -40,15 +40,36 @@ def _get_setting(key: str, default: str = "") -> str:
 
 @dataclass(frozen=True)
 class Settings:
-    """Immutable application settings loaded from Streamlit secrets or environment variables."""
+    """Settings with secret-backed values resolved at access time.
 
-    groq_api_key: str = _get_setting("GROQ_API_KEY")
-    groq_api_base: str = _get_setting("GROQ_API_BASE", "https://api.groq.com/openai/v1")
-    groq_model_name: str = _get_setting("GROQ_MODEL_NAME", "llama-3.3-70b-versatile")
+    These properties read the current ``st.secrets`` value before falling back
+    to the local environment, preventing an empty value from being cached when
+    this module is imported.
+    """
 
-    langchain_api_key: str = _get_setting("LANGCHAIN_API_KEY")
-    langchain_project: str = _get_setting("LANGCHAIN_PROJECT", "healthcare-ai-assistant")
-    langchain_tracing_v2: bool = _get_setting("LANGCHAIN_TRACING_V2", "false").lower() == "true"
+    @property
+    def groq_api_key(self) -> str:
+        return _get_setting("GROQ_API_KEY")
+
+    @property
+    def groq_api_base(self) -> str:
+        return _get_setting("GROQ_API_BASE", "https://api.groq.com/openai/v1")
+
+    @property
+    def groq_model_name(self) -> str:
+        return _get_setting("GROQ_MODEL_NAME", "llama-3.3-70b-versatile")
+
+    @property
+    def langchain_api_key(self) -> str:
+        return _get_setting("LANGCHAIN_API_KEY")
+
+    @property
+    def langchain_project(self) -> str:
+        return _get_setting("LANGCHAIN_PROJECT", "healthcare-ai-assistant")
+
+    @property
+    def langchain_tracing_v2(self) -> bool:
+        return _get_setting("LANGCHAIN_TRACING_V2", "false").lower() == "true"
 
     app_name: str = "Healthcare AI Assistant"
     app_tagline: str = "Your Trusted AI Companion for Health Education"
