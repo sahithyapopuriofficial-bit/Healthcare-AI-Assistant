@@ -39,9 +39,10 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
-    if not settings.grok_api_key:
+    if not settings.groq_api_key:
         st.error(
-            "⚠️ GROK_API_KEY is not configured. Add it to your .env file before chatting."
+            "⚠️ GROQ_API_KEY is not configured. Add it to your .env file "
+            "(or Streamlit Cloud Secrets) before chatting."
         )
 
     render_chat_interface()

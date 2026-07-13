@@ -57,7 +57,7 @@ def render_sidebar() -> None:
             st.markdown(
                 """
                 **Healthcare AI Assistant** is an educational AI chatbot built with
-                Streamlit, LangChain, and Grok (xAI). It offers general health
+                Streamlit, LangChain, and Groq Cloud. It offers general health
                 information, wellness tips, and preventive care guidance.
 
                 It does **not** diagnose conditions, prescribe medication, or replace

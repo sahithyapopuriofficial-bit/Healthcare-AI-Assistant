@@ -57,8 +57,8 @@ def _handle_error(exc: Exception) -> Iterator[str]:
 
     if "api key" in message or "unauthorized" in message or "401" in message:
         yield (
-            "⚠️ Authentication error: your Grok API key appears to be invalid or missing. "
-            "Please check the GROK_API_KEY value in your .env file."
+            "⚠️ Authentication error: your Groq API key appears to be invalid or missing. "
+            "Please check the GROQ_API_KEY value in your .env file (or Streamlit Secrets)."
         )
     elif "timeout" in message:
         yield "⚠️ The request timed out. Please try again in a moment."
