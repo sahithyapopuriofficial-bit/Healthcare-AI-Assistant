@@ -1,6 +1,6 @@
 # Healthcare AI Assistant
 
-An educational AI healthcare chatbot built with Streamlit, LangChain, and Grok (xAI). It answers
+An educational AI healthcare chatbot built with Streamlit, LangChain, and Groq. It answers
 general medical questions, offers symptom guidance, medication information, lifestyle tips, and
 first-aid guidance — without diagnosing conditions or replacing professional medical advice.
 
@@ -79,7 +79,7 @@ LANGCHAIN_PROJECT=healthcare-ai-assistant
 LANGCHAIN_TRACING_V2=true
 ```
 
-- **GROK_API_KEY**: Your xAI (Grok) API key.
+- **GROQ_API_KEY**: Your Groq API key.
 - **LANGCHAIN_API_KEY**: Your LangSmith API key (optional, enables tracing).
 - **LANGCHAIN_PROJECT**: LangSmith project name for organizing traces.
 - **LANGCHAIN_TRACING_V2**: Set to `true` to enable tracing.
