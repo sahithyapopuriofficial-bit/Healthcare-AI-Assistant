@@ -2,9 +2,8 @@
 Application-wide configuration and environment variable loading.
 
 Reads from Streamlit Cloud's `st.secrets` first (used when deployed), falling
-back to OS environment variables / a local `.env` file (used when running
-locally). This means the same code works in both environments without
-changes.
+back to OS environment variables / a local `.env` file (used locally).
+This means the same code works in both environments without changes.
 """
 
 import os
@@ -31,8 +30,8 @@ def _get_setting(key: str, default: str = "") -> str:
         if key in st.secrets:
             return str(st.secrets[key])
     except Exception:
-        # st.secrets raises if no secrets.toml exists (e.g. local runs
-        # without Streamlit Cloud secrets configured) — fall through to env.
+        # Fall back to environment variables if Streamlit secrets
+        # are unavailable.
         pass
 
     return os.getenv(key, default)
@@ -40,12 +39,7 @@ def _get_setting(key: str, default: str = "") -> str:
 
 @dataclass(frozen=True)
 class Settings:
-    """Settings with secret-backed values resolved at access time.
-
-    These properties read the current ``st.secrets`` value before falling back
-    to the local environment, preventing an empty value from being cached when
-    this module is imported.
-    """
+    """Application settings resolved from secrets or environment variables."""
 
     @property
     def groq_api_key(self) -> str:
@@ -53,11 +47,17 @@ class Settings:
 
     @property
     def groq_api_base(self) -> str:
-        return _get_setting("GROQ_API_BASE", "https://api.groq.com/openai/v1")
+        return _get_setting(
+            "GROQ_API_BASE",
+            "https://api.groq.com/openai/v1",
+        )
 
     @property
     def groq_model_name(self) -> str:
-        return _get_setting("GROQ_MODEL_NAME", "llama-3.3-70b-versatile")
+        return _get_setting(
+            "GROQ_MODEL_NAME",
+            "openai/gpt-oss-120b",
+        )
 
     @property
     def langchain_api_key(self) -> str:
@@ -65,11 +65,17 @@ class Settings:
 
     @property
     def langchain_project(self) -> str:
-        return _get_setting("LANGCHAIN_PROJECT", "healthcare-ai-assistant")
+        return _get_setting(
+            "LANGCHAIN_PROJECT",
+            "healthcare-ai-assistant",
+        )
 
     @property
     def langchain_tracing_v2(self) -> bool:
-        return _get_setting("LANGCHAIN_TRACING_V2", "false").lower() == "true"
+        return (
+            _get_setting("LANGCHAIN_TRACING_V2", "false").lower()
+            == "true"
+        )
 
     app_name: str = "Healthcare AI Assistant"
     app_tagline: str = "Your Trusted AI Companion for Health Education"
@@ -85,11 +91,8 @@ class Settings:
 
 
 def configure_langsmith(settings: "Settings") -> None:
-    """Configure LangSmith tracing environment variables.
+    """Configure LangSmith tracing environment variables."""
 
-    Args:
-        settings: Loaded application settings.
-    """
     if settings.langchain_tracing_v2 and settings.langchain_api_key:
         os.environ["LANGCHAIN_TRACING_V2"] = "true"
         os.environ["LANGCHAIN_API_KEY"] = settings.langchain_api_key
@@ -100,3 +103,4 @@ def configure_langsmith(settings: "Settings") -> None:
 
 settings = Settings()
 configure_langsmith(settings)
+
